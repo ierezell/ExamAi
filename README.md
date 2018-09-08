@@ -1,2 +1,2 @@
-# Projet_Detection_Fraude
-Trying to detect cheating on an exam with artificial intelligence. 
+# ExamAi 
+The goal is to monitor students passing exams and add some artificial intelligence to help teacher to keep an eye on students.
