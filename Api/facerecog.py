@@ -3,8 +3,7 @@
 import PIL.Image
 import dlib
 import numpy as np
-
-import models as dat_models
+import Api.models as dat_models
 
 face_detector = dlib.get_frontal_face_detector()
 
