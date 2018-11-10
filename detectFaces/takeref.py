@@ -1,4 +1,6 @@
 import cv2
+
+
 def takepicture():
     """
     Returns :
@@ -27,10 +29,10 @@ def takepicture():
 
     # Load the filters for the eye and face recognizer
     face_cascade = cv2.CascadeClassifier(
-        '../Api/models/haarcascade_frontalface_default.xml')
+        './models/haarcascade_frontalface_default.xml')
     print(face_cascade.empty())
     eye_cascade = cv2.CascadeClassifier(
-        '../Api/models/haarcascade_eye.xml')
+        './models/haarcascade_eye.xml')
 
     target = [200, 130, 450, 400]
 
@@ -64,7 +66,7 @@ def takepicture():
                     and pos[3] < target[3]
                         and nb_eyes == 1):
 
-                    cv2.imwrite("faces/etudiant.png", pic)
+                    cv2.imwrite("./faces/etudiant.png", pic)
                     phototaken = True
 
         cv2.imshow('Photo reference', img)

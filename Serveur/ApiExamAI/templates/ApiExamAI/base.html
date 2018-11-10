@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <link rel="stylesheet" href="/media/css/style.css" />
+   <title>{% block title %}ExamAi{% endblock %}</title>
+</head>
+<body>
+<header>ExamAi</header>
+    <nav>
+       {% block nav %}
+       <ul>
+            <li><a href="/">Statistiques</a></li>
+            <li><a href="/blog/">Élève</a></li>
+            <li><a href="/contact/">Fonctionnement</a></li>
+       </ul>
+       {% endblock %}
+   </nav>
+   <section id="content">
+       {% block content %}{% endblock %}
+   </section>
+<footer>&copy; ExamAi, Maitrise, Pierre Snell</footer>
+</body>
+</html>

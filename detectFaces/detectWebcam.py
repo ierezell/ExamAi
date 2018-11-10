@@ -1,6 +1,11 @@
+import facerecogApi
+import cv2
+from takeref import takepicture
+
+
 def detectStudent():
     # Take the reference picture to compare all along the exam.
-    takeref.takepicture()
+    takepicture()
 
     video_capture = cv2.VideoCapture(0)
 
@@ -9,9 +14,9 @@ def detectStudent():
     # #################################################################
     # TO DO , FETCH une image du serveur au lieux de celles en local###
     # #################################################################
-    test_image = facerecog.load_image_file("faces/etudiant.png")
+    test_image = facerecogApi.load_image_file("faces/etudiant.png")
 
-    test_face_encoding = facerecog.face_encodings(test_image)[0]
+    test_face_encoding = facerecogApi.face_encodings(test_image)[0]
 
     # Create arrays of known face encodings and their names
     known_face_encodings = [
@@ -33,7 +38,7 @@ def detectStudent():
         # Grab a single frame of video
         _, frame = video_capture.read()
         frame = cv2.flip(frame, 1)
-        # Resize frame of video to 1/4 size for faster face recognition processing
+        # Resize frame of video to 1/4 size for faster recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color
@@ -41,8 +46,8 @@ def detectStudent():
         rgb_small_frame = small_frame[:, :, ::-1]
 
         # Find all the faces and face encodings in the current frame of video
-        face_locations = facerecog.face_locations(rgb_small_frame)
-        face_encodings = facerecog.face_encodings(
+        face_locations = facerecogApi.face_locations(rgb_small_frame)
+        face_encodings = facerecogApi.face_encodings(
             rgb_small_frame, face_locations)
 
         # if not face_locations:
@@ -51,7 +56,7 @@ def detectStudent():
         face_names = []
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
-            matches = facerecog.compare_faces(
+            matches = facerecogApi.compare_faces(
                 known_face_encodings, face_encoding)
             name = "Unknown"
             # If a match was found in known_face_encodings,
@@ -75,11 +80,12 @@ def detectStudent():
             warning_unknown = 0
 
         if warning_disapear > 50:
-            print("Oukilé ?")
+            print("L'élève à disparu !")
         if warning_unknown > 50:
-            print("konépa")
+            print("Visage inconnu !")
         # Display the results
-        for (top, right, bottom, left), name in zip(face_locations, face_names):
+        for (top, right, bottom, left), name in zip(face_locations,
+                                                    face_names):
             # Scale back up face locations since the frame we detected in was
             # scaled to 1/4 size
             top *= 4
