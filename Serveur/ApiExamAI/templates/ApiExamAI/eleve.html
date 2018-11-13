@@ -1,3 +1,7 @@
 {% extends "base.html"%}
-<h1>Surveillance en cours</h1>
-<p>Le {{date}} élève {{ idul }}</p>
+{% block title %} Surveillance de {{idul}} en cours {% endblock title %}
+{% block content %}
+    <h1>Surveillance en cours</h1>
+    <p>Le {{date}} élève {{ idul }}</p>
+    <p> plop </p>
+{% endblock content %}

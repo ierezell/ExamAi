@@ -1,18 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import Http404
-from django.shortcuts import redirect
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
+from Crypto.PublicKey import RSA
+from . import models
 
-
-def list_articles(request, year, month):
-    if month > 12:
-        #return redirect(view_eleve, idul='PISNE')
-        return redirect('eleve', idul='PISNE')
-        #return redirect("https://www.djangoproject.com")
-    else :
-        return HttpResponse(
-        "Vous avez demandé {0} et {1} !".format(year,month))
 
 def home(request):
     return HttpResponse("""
@@ -20,8 +11,28 @@ def home(request):
         <p>Api : getInfos ou plop </p>
     """)
 
-def view_eleve(request, idul):
-    #return HttpResponse("Vous avez demandé l'eleve {0} !".format(idul))
+
+def Acceuil_eleve(request):
+    return render(request, 'ApiExamAI/Acceuil_eleve.html')
+
+
+def view_eleve(request, idul="AAAAA"):
+    # return HttpResponse("Vous avez demandé l'eleve {0} !".format(idul))
     date = datetime.now()
-    #eturn render(request, 'ApiExamAI/eleve.html', date)
+    # return render(request, 'ApiExamAI/eleve.html', date)
     return render(request, 'ApiExamAI/eleve.html', locals())
+
+
+def stats(request):
+    return render(request, 'ApiExamAI/stats.html')
+
+
+def Aide(request):
+    return render(request, 'ApiExamAI/Aide.html')
+
+
+def connection(request, idul):
+    eleve = models.Eleve(idul=idul)
+    eleve.clee = RSA.generate(4096).publickey()
+    #eleve.surveille.suspect = 0
+    # public_key.encrypt(TrucQuonVeutSecuriser)
