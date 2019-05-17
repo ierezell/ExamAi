@@ -2,26 +2,29 @@ from django.db import models
 from django.utils import timezone
 
 
-class Surveillance(models.Model):
-    suspect = models.IntegerField(default=0)
-    photo = models.ImageField(upload_to="photos/", default=None)
-
-    class Meta:
-        verbose_name = "surveillance"
-        ordering = ['suspect']
-
-    def __str__(self):
-        return self.suspect
-
-
 class Eleve(models.Model):
     idul = models.CharField(max_length=7)
-    clee = models.IntegerField()
+    # clee_prive_serveur = models.IntegerField(default=0)
+    # clee_publique_client = models.IntegerField(default=0)
     dateCo = models.DateTimeField(auto_now_add=True,
                                   verbose_name="Date de connection")
-    # default=timezone.now,
-    #surveille = models.OneToOneField(Surveillance, on_delete=models.PROTECT, null=True)
-    # PROTECT ou CASCADE ou SET_NULL
+    suspect = models.IntegerField(default=0)
+    photo = models.ImageField(upload_to=f"images/eleves/{idul}",
+                              default=None,
+                              blank=True,
+                              null=True)
+
+    videoSurveillance = models.ImageField(
+        upload_to=f"images/surveillance/{idul}",
+        default=None,
+        blank=True,
+        null=True)
+
+    soundSurveillance = models.FileField(
+        upload_to=f"sound/surveillance/{idul}",
+        default=None,
+        blank=True,
+        null=True)
 
     class Meta:
         verbose_name = "eleve"
@@ -29,11 +32,3 @@ class Eleve(models.Model):
 
     def __str__(self):
         return self.idul
-
-
-"""
->> > article = Article(titre="Bonjour", auteur="Maxime")
->> > for article in Article.objects.filter(auteur="Maxime"):
->> > Article.objects.filter(titre__contains="crêpe")
->> > Article.objects.filter(date__lt=timezone.now())
-"""

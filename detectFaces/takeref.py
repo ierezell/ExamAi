@@ -3,6 +3,7 @@ import cv2
 
 def takepicture():
     """
+    Ask for the user to put his head straight in a square with eyes visible
     Returns :
     -------
     Nothing, write the reference image in a folder.
@@ -20,25 +21,19 @@ def takepicture():
     >>> takepicture()
 
     """
-
-    # get the webcam
-    cap = cv2.VideoCapture(0)
-    # Set the dimensions of the capture
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
-
-    # Load the filters for the eye and face recognizer
+    frame = cv2.VideoCapture(0)
+    frame.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
+    frame.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
     face_cascade = cv2.CascadeClassifier(
         './models/haarcascade_frontalface_default.xml')
-    print(face_cascade.empty())
+    print("face cascade : ", face_cascade.empty())
     eye_cascade = cv2.CascadeClassifier(
         './models/haarcascade_eye.xml')
 
     target = [200, 130, 450, 400]
-
     phototaken = False
     while not phototaken:
-        _, img = cap.read()
+        _, img = frame.read()
         img = cv2.flip(img, 1)
         pic = img.copy()
         cv2.rectangle(img, (target[0], target[1]),
@@ -58,19 +53,14 @@ def takepicture():
             for nb_eyes, (ex, ey, ew, eh) in enumerate(eyes):
                 cv2.rectangle(roi_color, (ex, ey),
                               (ex + ew, ey + eh), (0, 255, 0), 2)
-
                 # If the head is in the target and we can see both eyes
-                if (pos[0] > target[0]
-                    and pos[1] > target[1]
-                    and pos[2] < target[2]
-                    and pos[3] < target[3]
-                        and nb_eyes == 1):
-
-                    cv2.imwrite("./faces/etudiant.png", pic)
-                    phototaken = True
+            if (pos[0] > target[0] and pos[1] > target[1] and
+                    pos[2] < target[2] and pos[3] < target[3] and
+                    len(eyes) == 2):
+                cv2.imwrite("./faces/etudiant.png", pic)
+                phototaken = True
 
         cv2.imshow('Photo reference', img)
-        # To process less frames
         cv2.waitKey(100)
 
     cv2.destroyAllWindows()
